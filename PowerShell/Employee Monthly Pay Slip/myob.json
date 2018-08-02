@@ -1,0 +1,18 @@
+{
+    "employees":  [
+                       {
+                           "first_name":  "David",
+                           "last_name":  "Rudd",
+                           "annual_salary": "60050",
+                           "super_rate": "9",
+                           "period": "01/03/2018"
+                       },
+                       {
+                           "first_name":  "Ryan",
+                           "last_name":  "Chen",
+                           "annual_salary": "120000",
+                           "super_rate": "10",
+                           "period": "01/03/2018"
+                       }                       
+                   ]
+}
