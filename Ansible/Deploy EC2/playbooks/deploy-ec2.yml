@@ -1,0 +1,76 @@
+---
+##############################################################################
+# Playbook - Create EC2 Security Group and EC2 Intance with Docker / nginx
+##############################################################################
+
+- name: Deploy EC2 server
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+
+  - name: Create EC2 Security Group (name = ansible)
+    ec2_group:
+      name: ansible
+      description: "Ansible Security Group"
+      region: "{{aws_region}}"
+      vpc_id: "{{vpc_id}}"
+      aws_access_key: "{{aws_access_key}}"
+      aws_secret_key: "{{aws_secret_key}}"
+      rules:
+      - proto: all
+        cidr_ip: "{{my_local_cidr_ip}}"
+      - proto: all
+        group_name: ansible
+      rules_egress:
+      - proto: all
+        cidr_ip: 0.0.0.0/0
+    register: firewall
+
+  - name: Create EC2 instance (name = ansible-demo) with 8gb volume, install Docker, and run nginx as a container
+    ec2:
+      aws_access_key: "{{aws_access_key}}"
+      aws_secret_key: "{{aws_secret_key}}"
+      key_name: "{{key_name}}"
+      region: "{{aws_region}}"
+      group_id: "{{firewall.group_id}}"
+      instance_type: "{{instance_type}}"
+      image: "{{ami_id}}"
+      user_data: "{{lookup('file','user_data.sh')}}"
+      wait: yes
+      volumes:
+        - device_name: /dev/xvda
+          volume_type: gp2
+          volume_size: 8
+          delete_on_termination: true
+      exact_count: 1
+      count_tag:
+         Name: ansible-demo
+      instance_tags:
+         Name: ansible-demo
+    register: ec2
+
+  - name: Get facts for all EC2 instances in the region
+    ec2_remote_facts:
+      aws_access_key: "{{aws_access_key}}"
+      aws_secret_key: "{{aws_secret_key}}"
+      region: "{{aws_region}}"
+    register: ec2_facts
+
+  - name: Download index.html from EC2 instance with the name ansible-demo
+    get_url:
+      url: "http://{{ item.0 }}/index.html"
+      dest: ./index.html
+      mode: 0644
+    with_together:
+      - "{{ec2_facts.instances|selectattr('tags.Name', 'equalto', 'ansible-demo')|map(attribute='public_ip_address')|list }}"
+
+  - name: Run python script to count words in index.html
+    local_action: command python wordcount.py
+    no_log: false
+
+  - name: Display word count results
+    debug: var=item
+    with_file:
+      - "./wordcount.log"

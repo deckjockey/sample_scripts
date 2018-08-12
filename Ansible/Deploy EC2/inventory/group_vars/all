@@ -1,0 +1,9 @@
+---
+aws_access_key: AKIAI4DMR3E6HJPO5YXA
+aws_secret_key: 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
+key_name: EC2_Key
+aws_region: ap-southeast-2
+vpc_id: vpc-aa6790ce
+ami_id: ami-39f8215b
+instance_type: t2.micro
+my_local_cidr_ip: 101.182.82.152/32
