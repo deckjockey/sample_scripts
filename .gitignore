@@ -1,2 +1,6 @@
 
 .DS_Store
+Ansible/Deploy_EC2/EC2_Key.pem
+Ansible/Deploy_EC2/playbooks/deploy-ec2.retry
+Ansible/Deploy_EC2/playbooks/index.html
+Ansible/Deploy_EC2/playbooks/wordcount.log
