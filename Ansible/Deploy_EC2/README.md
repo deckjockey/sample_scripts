@@ -1,6 +1,5 @@
 # Deploy EC2 instance using Ansible
 
-1. Logs the resource usage of the container every 10 seconds.
 
 ## Pre-Requisites
 
