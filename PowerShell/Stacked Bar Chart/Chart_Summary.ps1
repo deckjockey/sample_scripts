@@ -1,10 +1,10 @@
-$inputFile = "Onboarding_logs.csv"
-$CombinedLog = "Onboarding_Summary.out"
+$inputFile = "Chart_logs.csv"
+$CombinedLog = "Chart_Summary.out"
 
 if (Test-Path -Path $inputFile) {
 
-    $OnboardingLog = Import-Csv -Path $inputFile
-    #$OnboardingLog | Get-Member
+    $DataLog = Import-Csv -Path $inputFile
+    #$DataLog | Get-Member
 
     $100ErrorCount = 0
     $500ErrorCount = 0
@@ -20,7 +20,7 @@ if (Test-Path -Path $inputFile) {
     $FAILEDMaxRetriesCount = 0
     $UnknownErrorCount = 0
 
-    foreach ($row in $OnboardingLog) {
+    foreach ($row in $DataLog) {
         $StartTime = $row.starttime
         if ($row.status -eq "Business Exception") {
             Write-Output " * Found error with ID $($row.id)"
@@ -470,4 +470,4 @@ $ErrorsAreaChart.Series["100"].Points.DataBindXY($100Errors.Keys, $100Errors.Val
 $ErrorsAreaChart.Series["500"].ChartType = [System.Windows.Forms.DataVisualization.Charting.SeriesChartType]::StackedColumn
 $ErrorsAreaChart.Series["500"].Points.DataBindXY($500Errors.Keys, $500Errors.Values)
 
-$ErrorsAreaChart.SaveImage("Onboarding_Summary.png","png")
+$ErrorsAreaChart.SaveImage("Chart_Summary.png","png")
