@@ -29,13 +29,9 @@ The following rates for 2017-18 apply from 1 July 2017:
 For example, the payment in March for an employee with an annual salary of $60,050 and a super rate of 9% is:
 
 • pay period = Month of March (01 March to 31 March)
-
 • gross income = 60,050 / 12 = 5,004.16666667 (round down) = 5,004 
-
 • income tax = (3,572 + (60,050 - 37,000) x 0.325) / 12 = 921.9375 (round up) = 922
-
 • net income = 5,004 - 922 = 4,082
-
 • super = 5,004 x 9% = 450.36 (round down) = 450
 
 Below is the **input** and **output** format: 
